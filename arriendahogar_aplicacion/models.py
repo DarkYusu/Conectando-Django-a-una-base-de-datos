@@ -8,15 +8,25 @@ class Usuarios(models.Model):
     telefono_personal = models.CharField(max_length=20, blank=True, null=True)
     correo_electronico = models.CharField(unique=True, max_length=255)
     tipo_usuario = models.CharField(max_length=20)
-    fecha_registro = models.DateTimeField(auto_now_add=True)  # Auto set to current timestamp
-
-    # Relación Many-to-Many con Propiedades para marcar favoritas
+    fecha_registro = models.DateTimeField(auto_now_add=True)
     propiedades_favoritas = models.ManyToManyField('Propiedades', through='UsuariosPropiedadesFavoritas', related_name='usuarios_favoritos')
 
     class Meta:
         db_table = 'usuarios'
 
+class Regiones(models.Model):
+    nombre = models.CharField(unique=True, max_length=255)
 
+    class Meta:
+        db_table = 'regiones'
+
+class Comunas(models.Model):
+    nombre = models.CharField(unique=True, max_length=255)
+    region = models.ForeignKey(Regiones, on_delete=models.CASCADE, related_name='comunas')
+
+    class Meta:
+        db_table = 'comunas'
+        
 class Propiedades(models.Model):
     nombre = models.CharField(max_length=255)
     descripcion = models.TextField()
@@ -26,13 +36,10 @@ class Propiedades(models.Model):
     cantidad_habitaciones = models.IntegerField()
     cantidad_banos = models.IntegerField()
     direccion = models.CharField(max_length=255)
-    comuna = models.CharField(max_length=255)
+    comuna = models.ForeignKey(Comunas, on_delete=models.CASCADE, related_name='propiedades')
     tipo_inmueble = models.CharField(max_length=20)
     precio_mensual = models.DecimalField(max_digits=10, decimal_places=2)
-    arrendador = models.ForeignKey(Usuarios, on_delete=models.CASCADE, related_name='propiedades_publicadas')
-
-    # Relación Many-to-Many con Comunas
-    comunas = models.ManyToManyField('Comunas', through='PropiedadesComunas', related_name='propiedades')
+    arrendador = models.ForeignKey('Usuarios', on_delete=models.CASCADE, related_name='propiedades_publicadas')
 
     class Meta:
         db_table = 'propiedades'
@@ -41,15 +48,23 @@ class Propiedades(models.Model):
 class Arrendamientos(models.Model):
     arrendatario = models.ForeignKey(Usuarios, on_delete=models.CASCADE, related_name='arrendamientos')
     propiedad = models.ForeignKey(Propiedades, on_delete=models.CASCADE, related_name='arrendamientos')
-    fecha_solicitud = models.DateTimeField(auto_now_add=True)  # Auto set to current timestamp
+    fecha_solicitud = models.DateTimeField(auto_now_add=True)  
     estado = models.CharField(max_length=20, choices=[('pendiente', 'Pendiente'), ('aceptado', 'Aceptado'), ('rechazado', 'Rechazado')], default='pendiente')
 
     class Meta:
         db_table = 'arrendamientos'
 
 
+
+class Regiones(models.Model):
+    nombre = models.CharField(unique=True, max_length=255)
+
+    class Meta:
+        db_table = 'regiones'
+
 class Comunas(models.Model):
     nombre = models.CharField(unique=True, max_length=255)
+    region = models.ForeignKey(Regiones, on_delete=models.CASCADE, related_name='comunas')
 
     class Meta:
         db_table = 'comunas'
@@ -61,14 +76,14 @@ class PropiedadesComunas(models.Model):
 
     class Meta:
         db_table = 'propiedades_comunas'
-        unique_together = ('propiedad', 'comuna')  # Ensure a property is not linked to the same comuna more than once
+        unique_together = ('propiedad', 'comuna')  
 
 
 class UsuariosPropiedadesFavoritas(models.Model):
     usuario = models.ForeignKey(Usuarios, on_delete=models.CASCADE)
     propiedad = models.ForeignKey(Propiedades, on_delete=models.CASCADE)
-    fecha_agregado = models.DateTimeField(auto_now_add=True)  # Auto set to current timestamp
+    fecha_agregado = models.DateTimeField(auto_now_add=True)  
 
     class Meta:
         db_table = 'usuarios_propiedades_favoritas'
-        unique_together = ('usuario', 'propiedad')  # Ensure a user can't favorite the same property more than once
+        unique_together = ('usuario', 'propiedad')  

@@ -1,0 +1,29 @@
+Región: Antofagasta
+--------------------
+Nombre: Departamento en Concepción
+Descripción: Cómodo departamento cerca de la universidad
+
+Región: Arica y Parinacota
+--------------------
+Nombre: Casa en Ñuñoa
+Descripción: Amplia casa con patio y piscina
+Nombre: Parcela en Rancagua
+Descripción: Parcela con espacio para actividades al aire libre
+Nombre: Casa en La Florida
+Descripción: Casa con jardín en un sector tranquilo
+Nombre: Departamento en Las Condes
+Descripción: Elegante departamento con vistas a la ciudad
+Nombre: Departamento en Centro
+Descripción: Departamento amplio en el centro de la ciudad
+Nombre: Parcela en Pirque
+Descripción: Parcela con vista a la montaña
+
+Región: Tarapacá
+--------------------
+Nombre: Casa en La Reina
+Descripción: Casa familiar con jardín y área de BBQ
+Nombre: Departamento en Providencia
+Descripción: Moderno departamento en el corazón de Providencia
+Nombre: Parcela en Colina
+Descripción: Parcela con gran terreno para cultivo
+

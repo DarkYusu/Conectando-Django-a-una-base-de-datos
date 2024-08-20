@@ -15,14 +15,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from django.urls import path
-from arriendahogar_aplicacion.views import registrar_usuario_view,listar_propiedades_view,publicar_propiedad_view,generar_solicitud_arriendo_view, aceptar_arrendatario_view
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('registrar_usuario/', registrar_usuario_view, name='registrar_usuario'),
-    path('listar_propiedades/', listar_propiedades_view, name='listar_propiedades'),
-    path('publicar_propiedad/', publicar_propiedad_view, name='publicar_propiedad'),
-    path('generar_solicitud_arriendo/<int:propiedad_id>/', generar_solicitud_arriendo_view, name='generar_solicitud_arriendo'),
-    path('aceptar_arrendatario/<int:arrendamiento_id>/', aceptar_arrendatario_view, name='aceptar_arrendatario'),
 ]

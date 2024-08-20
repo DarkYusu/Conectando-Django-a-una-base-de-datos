@@ -1,6 +1,6 @@
 from django.apps import AppConfig
 
 
-class ArriendahogarAplicacionConfig(AppConfig):
+class ArrendahogarAplicacionConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
-    name = 'arriendahogar_aplicacion'
+    name = 'arrendahogar_aplicacion'

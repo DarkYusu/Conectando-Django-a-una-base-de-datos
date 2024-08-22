@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 # Create your models here.
 
@@ -26,7 +27,7 @@ class Usuarios(models.Model):
     telefono_personal = models.CharField(max_length=20, blank=True, null=True)
     correo_electronico = models.CharField(unique=True, max_length=255)
     fecha_registro = models.DateTimeField(blank=True, null=True)
-    user = models.ForeignKey('AuthUser', models.DO_NOTHING, blank=True, null=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     tu = models.ForeignKey('TipoUsuario', models.DO_NOTHING, blank=True, null=True)
 
     class Meta:
@@ -61,22 +62,29 @@ class PropiedadesComunas(models.Model):
 
 
 class Propiedades(models.Model):
+    TIPO_INMUEBLE_CHOICES = [
+        ('casa', 'Casa'),
+        ('departamento', 'Departamento'),
+        ('oficina', 'Oficina'),
+    ]
+    
     nombre = models.CharField(max_length=255)
     descripcion = models.TextField()
-    m2_construidos = models.FloatField()
-    m2_totales = models.FloatField()
+    m2_construidos = models.IntegerField()
+    m2_totales = models.IntegerField()
     cantidad_estacionamientos = models.IntegerField()
     cantidad_habitaciones = models.IntegerField()
     cantidad_banos = models.IntegerField()
     direccion = models.CharField(max_length=255)
-    tipo_inmueble = models.CharField(max_length=20)
-    precio_mensual = models.DecimalField(max_digits=10, decimal_places=2)
+    tipo_inmueble = models.CharField(max_length=20, choices=TIPO_INMUEBLE_CHOICES)
+    precio_mensual = models.IntegerField()
     arrendador = models.ForeignKey(Usuarios, models.DO_NOTHING)
     comuna = models.ForeignKey('Comunas', models.DO_NOTHING, blank=True, null=True)
 
     class Meta:
         managed = False
         db_table = 'propiedades'
+
 
 
 class Comunas(models.Model):
@@ -86,6 +94,9 @@ class Comunas(models.Model):
     class Meta:
         managed = False
         db_table = 'comunas'
+        
+    def __str__(self):
+        return self.nombre
 
 
 class Arrendamientos(models.Model):

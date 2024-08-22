@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Lista de Propiedades</title>
+</head>
+<body>
+    <h1>Lista de Propiedades</h1>
+    <ul>
+        {% for propiedad in propiedades %}
+            <li>
+                {{ propiedad.nombre }} - {{ propiedad.direccion }} - {{ propiedad.precio_mensual }} CLP
+            </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

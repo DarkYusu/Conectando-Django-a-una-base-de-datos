@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block template %}
+
+    <h1>Mis Propiedades</h1>
+    <a href="{% url 'crear_propiedad' %}">Añadir Nueva Propiedad</a>
+    <ul>
+        {% for propiedad in propiedades %}
+            <li>
+                {{ propiedad.nombre }} - {{ propiedad.direccion }} - {{ propiedad.precio_mensual }} CLP
+                <a href="{% url 'editar_propiedad' propiedad.id %}">Editar</a>
+                <a href="{% url 'eliminar_propiedad' propiedad.id %}">Eliminar</a>
+            </li>
+        {% endfor %}
+    </ul>
+    {% endblock %}

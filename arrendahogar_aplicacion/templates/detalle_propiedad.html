@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% block template %}
+<div class="container">
+    <h1 class="my-4">{{ propiedad.nombre }}</h1>
+    <div class="row">
+        <div class="col-md-8">
+            {% if propiedad.imagenes.all %}
+                <div id="carouselExampleIndicators" class="carousel slide">
+                    <div class="carousel-inner">
+                        {% for imagen in propiedad.imagenes.all %}
+                            <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                                <img src="{{ imagen.pi_url }}" class="d-block w-100" alt="{{ propiedad.nombre }}">
+                            </div>
+                        {% endfor %}
+                    </div>
+                    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Previous</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Next</span>
+                    </button>
+                </div>
+            {% else %}
+                <img src="" class="img-fluid" alt="No Image Available">
+            {% endif %}
+        </div>
+        <div class="col-md-4">
+            <p><strong>Dirección:</strong> {{ propiedad.direccion }}</p>
+            <p><strong>Descripción:</strong> {{ propiedad.descripcion }}</p>
+            <p><strong>Metros Construidos:</strong> {{ propiedad.m2_construidos }} m²</p>
+            <p><strong>Metros Totales:</strong> {{ propiedad.m2_totales }} m²</p>
+            <p><strong>Estacionamientos:</strong> {{ propiedad.cantidad_estacionamientos }}</p>
+            <p><strong>Habitaciones:</strong> {{ propiedad.cantidad_habitaciones }}</p>
+            <p><strong>Baños:</strong> {{ propiedad.cantidad_banos }}</p>
+            <p><strong>Tipo de Inmueble:</strong> {{ propiedad.tipo_inmueble }}</p>
+            <p><strong>Precio Mensual:</strong> {{ propiedad.precio_mensual }} CLP</p>
+        </div>
+    </div>
+    <a href="{% url 'propiedades_list' %}" class="btn btn-secondary mt-4">Volver a la Lista de Propiedades</a>
+</div>
+{% endblock %}

@@ -1,19 +1,24 @@
-
 {% extends 'base.html' %}
 {% block template %}
-    <h1>Tu Perfil</h1>
-    <p><strong>Nombre:</strong> {{ usuario.nombres }} </p>
-    <p><strong>Apellido:</strong> {{ usuario.apellidos }}</p>
-    <p><strong>Email:</strong> {{ usuario.correo_electronico }}</p>
-    <p><strong>Tipo de usuario:</strong> {{ usuario.tu.tu_nombre }}</p>
+<div class="container">
+    <h1 class="my-4">Tu Perfil</h1>
+    <div class="card mb-4">
+        <div class="card-body">
+            <p class="card-text"><strong>Nombre:</strong> {{ usuario.nombres }} </p>
+            <p class="card-text"><strong>Apellido:</strong> {{ usuario.apellidos }}</p>
+            <p class="card-text"><strong>Email:</strong> {{ usuario.correo_electronico }}</p>
+            <p class="card-text"><strong>Tipo de usuario:</strong> {{ usuario.tu.tu_nombre }}</p>
+        </div>
+    </div>
 
-    {% if usuario.tu.tu_id == 2 %}
-            <a class="nav-link" href="{% url 'propiedades_arrendador' %}">Mis Propiedades</a>
-            {%else%}
-            
-            <a>Ver Propiedades Disponibles</a>
-    {% endif %}
-
-
-    <a href="{% url 'logout' %}">Desconectarse</a>
-{% endblock %}}
+    <div class="mb-3">
+        <a class="btn btn-primary" href="{% url 'perfil_usuario' %}">Editar Perfil</a>
+        {% if usuario.tu.tu_id == 2 %}
+            <a class="btn btn-secondary" href="{% url 'propiedades_arrendador' %}">Mis Propiedades</a>
+        {% else %}
+            <a class="btn btn-secondary" href="{% url 'propiedades_list' %}">Ver Propiedades Disponibles</a>
+        {% endif %}
+        <a class="btn btn-danger" href="{% url 'logout' %}">Desconectarse</a>
+    </div>
+</div>
+{% endblock %}

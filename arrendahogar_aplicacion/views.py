@@ -72,6 +72,11 @@ def propiedades_list(request):
     propiedades = Propiedades.objects.all()
     return render(request, 'propiedades_list.html', {'propiedades': propiedades,'usuario':usuario})
 
+def detalle_propiedad(request, propiedad_id):
+    usuario =Usuarios.objects.filter(user_id=request.user.id).first()
+    propiedad = get_object_or_404(Propiedades, id=propiedad_id)
+    return render(request, 'detalle_propiedad.html', {'propiedad': propiedad, 'usuario':usuario})
+
 @login_required
 def propiedades_arrendador(request):
     usuario = request.user.usuarios_set.first()  # Asumiendo que un usuario tiene un objeto Usuarios
@@ -116,21 +121,30 @@ def crear_propiedad(request):
 
     return render(request, 'crear_propiedad.html', {
         'propiedad_form': propiedad_form,
-        'imagenes_formset': imagenes_formset,
+        'imagenes_formset': imagenes_formset,'usuario':usuario
     })
 
 @login_required
-def editar_propiedad(request, propiedad_id):
-    usuario = request.user.usuarios_set.first()
-    propiedad = get_object_or_404(Propiedades, id=propiedad_id, arrendador=usuario)
+def editar_propiedad(request, pk):
+    propiedad = get_object_or_404(Propiedades, pk=pk)
+    
     if request.method == 'POST':
-        form = PropiedadForm(request.POST, instance=propiedad)
-        if form.is_valid():
+        form = PropiedadesForm(request.POST, instance=propiedad)
+        formset = PropiedadesImagenesFormSet(request.POST, request.FILES, instance=propiedad)
+        
+        if form.is_valid() and formset.is_valid():
             form.save()
-            return redirect('propiedades_arrendador')
+            formset.save()
+            return redirect('detalle_propiedad', pk=propiedad.pk)
     else:
-        form = PropiedadForm(instance=propiedad)
-    return render(request, 'editar_propiedad.html', {'form': form})
+        form = PropiedadesForm(instance=propiedad)
+        formset = PropiedadesImagenesFormSet(instance=propiedad)
+    
+    return render(request, 'editar_propiedad.html', {
+        'form': form,
+        'formset': formset,
+        'propiedad': propiedad
+    })
 
 @login_required
 def eliminar_propiedad(request, propiedad_id):

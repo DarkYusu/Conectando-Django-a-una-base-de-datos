@@ -1,12 +1,35 @@
 
 {% extends 'base.html' %}
 {% block template %}
-    <h1>Lista de Propiedades</h1>
-    <ul>
+
+<div class="container">
+    <h1 class="my-4">Lista de Propiedades</h1>
+    <div class="row">
         {% for propiedad in propiedades %}
-            <li>
-                {{ propiedad.nombre }} - {{ propiedad.direccion }} - {{ propiedad.precio_mensual }} CLP - {{propiedad.descripcion}}
-            </li>
+            <div class="col-md-4 mb-4">
+                <div class="card">
+                    {% if propiedad.imagenes.all %}
+                        <img src="{{ propiedad.imagenes.first.pi_url }}" class="card-img-top" alt="{{ propiedad.nombre }}">
+                    {% else %}
+                        <img src="" class="card-img-top" alt="No Image Available">
+                    {% endif %}
+                    <div class="card-body">
+                        <h5 class="card-title">{{ propiedad.nombre }}</h5>
+                        <p class="card-text"><strong>Dirección:</strong> {{ propiedad.direccion }}</p>
+                        <p class="card-text"><strong>Precio Mensual:</strong> {{ propiedad.precio_mensual }} CLP</p>
+                        <p class="card-text"><strong>Descripción:</strong> {{ propiedad.descripcion }}</p>
+                        <a href="{% url 'detalle_propiedad' propiedad.id %}" class="btn btn-primary">Ver Detalles</a>
+                    </div>
+                </div>
+            </div>
+        {% empty %}
+            <div class="alert alert-info" role="alert">
+                No hay propiedades disponibles en este momento.
+            </div>
         {% endfor %}
-    </ul>
-{% endblock %}}
+    </div>
+</div>
+{% endblock %}
+
+
+            <!-- <a href="{% url 'detalle_propiedad' propiedad.id %}" class="list-group-item list-group-item-action mb-2"> -->

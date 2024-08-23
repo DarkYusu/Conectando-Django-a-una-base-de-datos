@@ -1,9 +1,6 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Lista de Propiedades</title>
-</head>
-<body>
+
+{% extends 'base.html' %}
+{% block template %}
     <h1>Lista de Propiedades</h1>
     <ul>
         {% for propiedad in propiedades %}
@@ -12,5 +9,4 @@
             </li>
         {% endfor %}
     </ul>
-</body>
-</html>
+{% endblock %}}

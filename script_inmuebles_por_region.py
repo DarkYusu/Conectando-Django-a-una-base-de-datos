@@ -5,7 +5,7 @@ import os
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'arriendahogar_proyecto.settings')
 django.setup()
 
-from arriendahogar_aplicacion.models import Propiedades, Comunas, Regiones
+from arrendahogar_aplicacion.models import Propiedades, Comunas, Regiones
 
 def exportar_inmuebles_por_region():
     # Realiza la consulta para obtener propiedades, comunas y regiones

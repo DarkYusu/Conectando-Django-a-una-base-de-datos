@@ -51,6 +51,7 @@ def user_logout(request):
     logout(request)
     return redirect('login')
 
+@login_required
 def propiedades_list(request):
     propiedades = Propiedades.objects.all()
     return render(request, 'propiedades_list.html', {'propiedades': propiedades})
@@ -59,7 +60,7 @@ def propiedades_list(request):
 def propiedades_arrendador(request):
     usuario = request.user.usuarios_set.first()  # Asumiendo que un usuario tiene un objeto Usuarios
     if usuario.tu.tu_id == 2:  # Verifica si es un arrendador
-        usuario =Usuarios.objects.filter(user_id=request.user.id).first()
+        usuario = Usuarios.objects.filter(user_id=request.user.id).first()
         propiedades = Propiedades.objects.filter(arrendador=usuario)
         return render(request, 'propiedades_arrendador.html', {'propiedades': propiedades,"usuario":usuario})
     else:
@@ -74,6 +75,7 @@ class PropiedadForm(ModelForm):
 
 @login_required
 def crear_propiedad(request):
+    usuario = Usuarios.objects.filter(user_id=request.user.id).first()
     if request.method == 'POST':
         form = PropiedadForm(request.POST)
         if form.is_valid():
@@ -93,7 +95,7 @@ def crear_propiedad(request):
     else:
         form = PropiedadForm()
     
-    return render(request, 'crear_propiedad.html', {'form': form})
+    return render(request, 'crear_propiedad.html', {'form': form, "usuario":usuario})
 
 @login_required
 def editar_propiedad(request, propiedad_id):

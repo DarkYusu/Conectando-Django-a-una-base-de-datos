@@ -1,9 +1,6 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Profile</title>
-</head>
-<body>
+
+{% extends 'base.html' %}
+{% block template %}
     <h1>Profile</h1>
     
     <p><strong>Nombre:</strong> {{ usuario.nombres }} </p>
@@ -11,5 +8,4 @@
     <p><strong>Email:</strong> {{ user.email }}</p>
    
     <a href="{% url 'logout' %}">Logout</a>
-</body>
-</html>
+{% endblock %}}

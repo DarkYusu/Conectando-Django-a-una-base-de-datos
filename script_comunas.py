@@ -7,7 +7,7 @@ import os
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'arriendahogar_proyecto.settings')
 django.setup()
 
-from arriendahogar_aplicacion.models import Propiedades  # Importa el modelo Propiedades
+from arrendahogar_aplicacion.models import Propiedades  # Importa el modelo Propiedades
 
 def exportar_inmuebles():
     # Realiza la consulta para obtener nombre, descripción y comuna de los inmuebles

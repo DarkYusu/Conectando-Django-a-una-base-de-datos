@@ -1,6 +1,6 @@
 from django import forms
 from django.forms import modelformset_factory, inlineformset_factory
-from .models import Propiedades, PropiedadesImagenes
+from .models import Propiedades, PropiedadesImagenes, Usuarios
 
 # Formulario para Propiedades
 class PropiedadesForm(forms.ModelForm):
@@ -24,3 +24,16 @@ PropiedadesImagenesFormSet = inlineformset_factory(
     extra=3,  # Número de formularios adicionales a mostrar inicialmente
     can_delete=True
 )
+
+class PerfilUsuarioForm(forms.ModelForm):
+    class Meta:
+        model = Usuarios
+        fields = ['nombres', 'apellidos', 'direccion', 'telefono_personal', 'correo_electronico']
+
+        widgets = {
+            'nombres': forms.TextInput(attrs={'class': 'form-control'}),
+            'apellidos': forms.TextInput(attrs={'class': 'form-control'}),
+            'direccion': forms.TextInput(attrs={'class': 'form-control'}),
+            'telefono_personal': forms.TextInput(attrs={'class': 'form-control'}),
+            'correo_electronico': forms.EmailInput(attrs={'class': 'form-control'}),
+        }

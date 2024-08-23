@@ -15,7 +15,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from arrendahogar_aplicacion.views import user_login, user_logout, user_register, profile, home, propiedades_list,propiedades_arrendador,crear_propiedad,editar_propiedad, eliminar_propiedad,bas
+from arrendahogar_aplicacion.views import user_login, user_logout, user_register, profile, home, propiedades_list,propiedades_arrendador,crear_propiedad,editar_propiedad, eliminar_propiedad,bas,editar_perfil
 
 urlpatterns = [
     path('', home, name='home'),
@@ -23,6 +23,7 @@ urlpatterns = [
     path('login/', user_login, name='login'),
     path('register/', user_register, name='register'),
     path('profile/', profile, name='profile'),
+    path('perfil/', editar_perfil, name='perfil_usuario'),
     path('logout/', user_logout, name='logout'),
     path('propiedades/', propiedades_list, name='propiedades_list'),
     path('mis-propiedades/', propiedades_arrendador, name='propiedades_arrendador'),

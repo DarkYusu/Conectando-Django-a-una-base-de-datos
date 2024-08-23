@@ -62,12 +62,6 @@ class PropiedadesComunas(models.Model):
 
 
 class Propiedades(models.Model):
-    TIPO_INMUEBLE_CHOICES = [
-        ('casa', 'Casa'),
-        ('departamento', 'Departamento'),
-        ('oficina', 'Oficina'),
-    ]
-    
     nombre = models.CharField(max_length=255)
     descripcion = models.TextField()
     m2_construidos = models.IntegerField()
@@ -76,14 +70,26 @@ class Propiedades(models.Model):
     cantidad_habitaciones = models.IntegerField()
     cantidad_banos = models.IntegerField()
     direccion = models.CharField(max_length=255)
-    tipo_inmueble = models.CharField(max_length=20, choices=TIPO_INMUEBLE_CHOICES)
+    tipo_inmueble = models.CharField(max_length=20)
     precio_mensual = models.IntegerField()
-    arrendador = models.ForeignKey(Usuarios, models.DO_NOTHING)
+    arrendador = models.ForeignKey('Usuarios', models.DO_NOTHING)
     comuna = models.ForeignKey('Comunas', models.DO_NOTHING, blank=True, null=True)
 
     class Meta:
         managed = False
         db_table = 'propiedades'
+        
+class PropiedadesImagenes(models.Model):
+    pi_id = models.AutoField(primary_key=True)
+    propiedad = models.ForeignKey(Propiedades, models.DO_NOTHING)
+    pi_url = models.CharField(max_length=255, blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'propiedades_imagenes'
+        
+    def __str__(self):
+        return f"Imagen de {self.propiedad.nombre} - {self.pi_url}"
 
 
 

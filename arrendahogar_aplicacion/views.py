@@ -5,6 +5,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
 from .models import Usuarios, Propiedades,AuthUser
 from django.core.exceptions import ObjectDoesNotExist
+from .forms import PropiedadesForm, PropiedadesImagenesFormSet,PerfilUsuarioForm
 
 def home(request):
     usuario =Usuarios.objects.filter(user_id=request.user.id).first()
@@ -52,9 +53,24 @@ def user_logout(request):
     return redirect('login')
 
 @login_required
+def editar_perfil(request):
+    usuario = Usuarios.objects.get(user=request.user)
+
+    if request.method == 'POST':
+        form = PerfilUsuarioForm(request.POST, instance=usuario)
+        if form.is_valid():
+            form.save()
+            return redirect('perfil_usuario')
+    else:
+        form = PerfilUsuarioForm(instance=usuario)
+
+    return render(request, 'editar_perfil.html', {'form': form, 'usuario':usuario})
+
+@login_required
 def propiedades_list(request):
+    usuario =Usuarios.objects.filter(user_id=request.user.id).first()
     propiedades = Propiedades.objects.all()
-    return render(request, 'propiedades_list.html', {'propiedades': propiedades})
+    return render(request, 'propiedades_list.html', {'propiedades': propiedades,'usuario':usuario})
 
 @login_required
 def propiedades_arrendador(request):
@@ -75,27 +91,33 @@ class PropiedadForm(ModelForm):
 
 @login_required
 def crear_propiedad(request):
-    usuario = Usuarios.objects.filter(user_id=request.user.id).first()
-    if request.method == 'POST':
-        form = PropiedadForm(request.POST)
-        if form.is_valid():
-            try:
-                # Obtén la instancia del usuario autenticado
-                auth_user = request.user
-                # Obtén el perfil de Usuarios asociado al usuario autenticado
-                usuario = Usuarios.objects.get(user=auth_user)
-                # Crea una nueva propiedad con los datos del formulario
-                propiedad = form.save(commit=False)
-                propiedad.arrendador = usuario
-                propiedad.save()
-                return redirect('propiedades_arrendador')
-            except ObjectDoesNotExist:
-                # Manejo de errores si el usuario no tiene un perfil asociado
-                return render(request, 'error.html', {'message': 'No se pudo encontrar el perfil de usuario.'})
-    else:
-        form = PropiedadForm()
+    usuario = Usuarios.objects.get(user=request.user)
     
-    return render(request, 'crear_propiedad.html', {'form': form, "usuario":usuario})
+    if request.method == 'POST':
+        propiedad_form = PropiedadesForm(request.POST)
+        imagenes_formset = PropiedadesImagenesFormSet(request.POST, request.FILES)
+
+        if propiedad_form.is_valid() and imagenes_formset.is_valid():
+            propiedad = propiedad_form.save(commit=False)
+            propiedad.arrendador = usuario
+            propiedad.save()
+
+            # Guardar las imágenes asociadas a la propiedad
+            for form in imagenes_formset.forms:
+                if form.cleaned_data.get('pi_url'):
+                    imagen = form.save(commit=False)
+                    imagen.propiedad = propiedad
+                    imagen.save()
+
+            return redirect('propiedades_arrendador')
+    else:
+        propiedad_form = PropiedadesForm()
+        imagenes_formset = PropiedadesImagenesFormSet()
+
+    return render(request, 'crear_propiedad.html', {
+        'propiedad_form': propiedad_form,
+        'imagenes_formset': imagenes_formset,
+    })
 
 @login_required
 def editar_propiedad(request, propiedad_id):

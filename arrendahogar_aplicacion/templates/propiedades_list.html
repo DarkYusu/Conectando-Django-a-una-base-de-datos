@@ -5,7 +5,7 @@
     <ul>
         {% for propiedad in propiedades %}
             <li>
-                {{ propiedad.nombre }} - {{ propiedad.direccion }} - {{ propiedad.precio_mensual }} CLP
+                {{ propiedad.nombre }} - {{ propiedad.direccion }} - {{ propiedad.precio_mensual }} CLP - {{propiedad.descripcion}}
             </li>
         {% endfor %}
     </ul>

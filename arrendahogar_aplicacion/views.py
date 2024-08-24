@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from .models import Usuarios, Propiedades
@@ -9,17 +9,13 @@ from .services import (
     obtener_usuario_actual, obtener_propiedades, obtener_propiedad_por_id,
     autenticar_usuario, registrar_usuario, obtener_usuario_para_perfil,
     guardar_perfil_usuario, obtener_propiedades_por_arrendador,
-    guardar_propiedad_y_imagenes, actualizar_propiedad, eliminar_propiedad
+    guardar_propiedad_y_imagenes, actualizar_propiedad, eliminar_propiedad_servicio
 )
 
 def home(request):
     usuario = obtener_usuario_actual(request.user)
     propiedades = obtener_propiedades()
     return render(request, 'home.html', {'propiedades': propiedades, 'usuario': usuario})
-
-def bas(request):
-    usuario = obtener_usuario_actual(request.user)
-    return render(request, 'base.html', {"usuario": usuario})
 
 def user_login(request):
     if request.method == 'POST':
@@ -144,13 +140,16 @@ def editar_propiedad(request, pk):
 
 @login_required
 def eliminar_propiedad(request, propiedad_id):
-    usuario = request.user.usuarios_set.first()
-    propiedad = obtener_propiedad_por_id(propiedad_id)
+    usuario = request.user.usuarios_set.first()  # Asegúrate de que estás obteniendo el usuario relacionado
+    propiedad = get_object_or_404(Propiedades, id=propiedad_id)
+    
+    # Verifica que el usuario actual sea el arrendador de la propiedad
     if propiedad.arrendador == usuario:
         if request.method == 'POST':
-            eliminar_propiedad(propiedad)
+            eliminar_propiedad_servicio(propiedad)
             return redirect('propiedades_arrendador')
-    return render(request, 'eliminar_propiedad.html', {'propiedad': propiedad})
+    
+    return render(request, 'eliminar_propiedad.html', {'propiedad': propiedad, 'usuario':usuario})
 
 @login_required
 def mis_propiedades(request):

@@ -66,5 +66,5 @@ def actualizar_propiedad(propiedad, post_data, files):
         return True
     return False
 
-def eliminar_propiedad(propiedad):
+def eliminar_propiedad_servicio(propiedad):
     propiedad.delete()

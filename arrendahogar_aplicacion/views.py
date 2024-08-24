@@ -67,6 +67,7 @@ def editar_perfil(request):
 @login_required
 def propiedades_list(request):
     # Obtener los IDs de regiones y comunas del GET
+    usuario = Usuarios.objects.get(user=request.user)
     region_id = request.GET.get('region')
     comuna_id = request.GET.get('comuna')
     regiones = Regiones.objects.all()
@@ -86,6 +87,7 @@ def propiedades_list(request):
         'regiones': regiones,
         'comunas': comunas,
         'comunas_data': comunas_data,
+        'usuario': usuario
     }
     return render(request, 'propiedades_list.html', context)
 

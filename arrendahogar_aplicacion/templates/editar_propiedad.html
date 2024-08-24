@@ -1,25 +1,42 @@
-
 {% extends 'base.html' %}
 {% block template %}
-<h1>Editar Propiedad</h1>
+{% load static %}
+<div class="container">
+    <h1 class="my-4">Editar Propiedad</h1>
 
-<form method="post" enctype="multipart/form-data">
-    {% csrf_token %}
-    {{ form.as_p }}
-    
-    <h3>Imágenes</h3>
-    {{ formset.management_form }}
-    {% for form in formset %}
-        <div class="form-group">
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="mb-4">
+            <h4>Detalles de la Propiedad</h4>
             {{ form.as_p }}
-            {% if form.instance.pk %}
-                <div>
-                    <img src="{{ form.instance.pi_url }}" alt="Imagen" style="max-width: 200px;">
-                </div>
-            {% endif %}
         </div>
-    {% endfor %}
-    
-    <button type="submit" class="btn btn-primary">Guardar cambios</button>
-</form>
+
+        <div class="mb-4">
+            <h4>Imágenes de la Propiedad</h4>
+            {{ formset.management_form }}
+            <div class="row">
+                {% for form in formset %}
+                    <div class="col-md-4 mb-3">
+                        <div class="card">
+                            <div class="card-body">
+                                {{ form.as_p }}
+                            </div>
+                            {% if form.instance.pk %}
+                                <img src="{{ form.instance.pi_url }}" alt="Imagen" class="card-img-bottom img-fluid" style="max-height: 200px; object-fit: cover;">
+                            {% else %}
+                                <img src="{% static 'images/imagen_default.jpg' %}" alt="Imagen por defecto" class="card-img-bottom img-fluid" style="max-height: 200px; object-fit: cover;">
+                            {% endif %}
+                        </div>
+                    </div>
+                {% empty %}
+                    <div class="col-12">
+                        <p>No se han añadido imágenes.</p>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Guardar cambios</button>
+    </form>
+</div>
 {% endblock %}

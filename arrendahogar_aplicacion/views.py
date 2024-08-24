@@ -4,6 +4,7 @@ from django.contrib.auth.decorators import login_required
 from .models import Usuarios, Propiedades
 from django.contrib.auth.forms import UserCreationForm
 from .forms import PropiedadesForm, PropiedadesImagenesFormSet, PerfilUsuarioForm
+from .models import Propiedades, Comunas, Regiones
 from .services import (
     obtener_usuario_actual, obtener_propiedades, obtener_propiedad_por_id,
     autenticar_usuario, registrar_usuario, obtener_usuario_para_perfil,
@@ -65,9 +66,28 @@ def editar_perfil(request):
 
 @login_required
 def propiedades_list(request):
-    usuario = obtener_usuario_actual(request.user)
-    propiedades = obtener_propiedades()
-    return render(request, 'propiedades_list.html', {'propiedades': propiedades, 'usuario': usuario})
+    # Obtener los IDs de regiones y comunas del GET
+    region_id = request.GET.get('region')
+    comuna_id = request.GET.get('comuna')
+    regiones = Regiones.objects.all()
+    comunas = Comunas.objects.all()
+    propiedades = Propiedades.objects.all()
+
+    if region_id:
+        propiedades = propiedades.filter(comuna__region_id=region_id)
+    if comuna_id:
+        propiedades = propiedades.filter(comuna_id=comuna_id)
+
+    # Convertir comunas a formato JSON
+    comunas_data = list(comunas.values('id', 'nombre', 'region_id'))
+
+    context = {
+        'propiedades': propiedades,
+        'regiones': regiones,
+        'comunas': comunas,
+        'comunas_data': comunas_data,
+    }
+    return render(request, 'propiedades_list.html', context)
 
 def detalle_propiedad(request, propiedad_id):
     usuario = obtener_usuario_actual(request.user)

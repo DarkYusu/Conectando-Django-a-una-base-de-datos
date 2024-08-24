@@ -3,6 +3,29 @@
 {% block template %}
 <div class="container">
     <h1 class="my-4 text-center">Lista de Propiedades</h1>
+
+    <form method="get" class="mb-4">
+        <div class="form-group">
+            <label for="region">Filtrar por Región</label>
+            <select name="region" id="region" class="form-control">
+                <option value="">Selecciona una Región</option>
+                {% for region in regiones %}
+                    <option value="{{ region.id }}" {% if request.GET.region == region.id|stringformat:"s" %}selected{% endif %}>{{ region.nombre }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="form-group mt-3">
+            <label for="comuna">Filtrar por Comuna</label>
+            <select name="comuna" id="comuna" class="form-control">
+                <option value="">Selecciona una Comuna</option>
+                {% for comuna in comunas %}
+                    <option value="{{ comuna.id }}" {% if request.GET.comuna == comuna.id|stringformat:"s" %}selected{% endif %}>{{ comuna.nombre }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <button type="submit" class="btn btn-primary mt-3">Filtrar</button>
+    </form>
+
     <div class="row">
         {% for propiedad in propiedades %}
             <div class="col-md-4 mb-4">
@@ -30,5 +53,4 @@
         {% endfor %}
     </div>
 </div>
-
 {% endblock %}

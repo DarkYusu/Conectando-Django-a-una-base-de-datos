@@ -48,6 +48,8 @@ class Regiones(models.Model):
     class Meta:
         managed = False
         db_table = 'regiones'
+    def __str__(self):
+        return self.nombre
 
 class PropiedadesComunas(models.Model):
     propiedad = models.ForeignKey('Propiedades', models.DO_NOTHING)

@@ -1,26 +1,30 @@
-
 {% extends 'base.html' %}
 {% block template %}
-<h1>Crear Propiedad</h1>
+<div class="container mt-4">
+    <h1 class="mb-4">Crear Propiedad</h1>
 
-<form method="post" enctype="multipart/form-data">
-    {% csrf_token %}
-    
-    <!-- Formulario para la Propiedad -->
-    {{ propiedad_form.as_p }}
-    
-    <h3>Imágenes de la Propiedad</h3>
-    
-    <!-- Formset para las Imágenes -->
-    {{ imagenes_formset.management_form }}
-    {% for form in imagenes_formset.forms %}
-        <div class="form-group">
-            {{ form.as_p }}
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        <!-- Formulario para la Propiedad -->
+        <div class="mb-4">
+            {{ propiedad_form.as_p }}
         </div>
-    {% endfor %}
-    
-    <!-- Botón para guardar la propiedad -->
-    <button type="submit" class="btn btn-primary">Guardar Propiedad</button>
-</form>
 
+        <h3 class="mb-3">Imágenes de la Propiedad</h3>
+
+        <!-- Formset para las Imágenes -->
+        <div class="mb-4">
+            {{ imagenes_formset.management_form }}
+            {% for form in imagenes_formset.forms %}
+                <div class="form-group mb-2">
+                    {{ form.as_p }}
+                </div>
+            {% endfor %}
+        </div>
+
+        <!-- Botón para guardar la propiedad -->
+        <button type="submit" class="btn btn-primary">Guardar Propiedad</button>
+    </form>
+</div>
 {% endblock %}

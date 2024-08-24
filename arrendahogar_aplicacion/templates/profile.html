@@ -2,22 +2,50 @@
 {% block template %}
 <div class="container">
     <h1 class="my-4">Tu Perfil</h1>
+    
     <div class="card mb-4">
+        <div class="card-header">
+            <h3 class="mb-0">Información Personal</h3>
+        </div>
         <div class="card-body">
-            <p class="card-text"><strong>Nombre:</strong> {{ usuario.nombres }} </p>
-            <p class="card-text"><strong>Apellido:</strong> {{ usuario.apellidos }}</p>
-            <p class="card-text"><strong>Email:</strong> {{ usuario.correo_electronico }}</p>
-            <p class="card-text"><strong>Tipo de usuario:</strong> {{ usuario.tu.tu_nombre }}</p>
+            <div class="row">
+                <div class="col-md-4 mb-3">
+                    <p class="card-text"><strong>Nombre:</strong> {{ usuario.nombres }}</p>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <p class="card-text"><strong>Apellido:</strong> {{ usuario.apellidos }}</p>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <p class="card-text"><strong>RUT:</strong> {{ usuario.rut }}</p>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <p class="card-text"><strong>Dirección:</strong> {{ usuario.direccion }}</p>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <p class="card-text"><strong>Teléfono:</strong> {{ usuario.telefono_personal|default:"No proporcionado" }}</p>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <p class="card-text"><strong>Email:</strong> {{ usuario.correo_electronico }}</p>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <p class="card-text"><strong>Fecha de Registro:</strong> {{ usuario.fecha_registro|date:"d/m/Y H:i" }}</p>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <p class="card-text"><strong>Tipo de Usuario:</strong> {{ usuario.tu.tu_nombre }}</p>
+                </div>
+            </div>
         </div>
     </div>
 
-    <div class="mb-3">
-        <a class="btn btn-primary" href="{% url 'perfil_usuario' %}">Editar Perfil</a>
+    <div class="d-flex flex-column flex-md-row mb-3">
+        <a class="btn btn-primary me-md-2 mb-2 mb-md-0" href="{% url 'perfil_usuario' %}">Editar Perfil</a>
+        
         {% if usuario.tu.tu_id == 2 %}
-            <a class="btn btn-secondary" href="{% url 'propiedades_arrendador' %}">Mis Propiedades</a>
+            <a class="btn btn-secondary me-md-2 mb-2 mb-md-0" href="{% url 'propiedades_arrendador' %}">Mis Propiedades</a>
         {% else %}
-            <a class="btn btn-secondary" href="{% url 'propiedades_list' %}">Ver Propiedades Disponibles</a>
+            <a class="btn btn-secondary me-md-2 mb-2 mb-md-0" href="{% url 'propiedades_list' %}">Ver Propiedades Disponibles</a>
         {% endif %}
+        
         <a class="btn btn-danger" href="{% url 'logout' %}">Desconectarse</a>
     </div>
 </div>

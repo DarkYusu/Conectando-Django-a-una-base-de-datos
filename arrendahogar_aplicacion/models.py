@@ -34,7 +34,6 @@ class Usuarios(models.Model):
         managed = False
         db_table = 'usuarios'
 
-
 class TipoUsuario(models.Model):
     tu_id = models.AutoField(primary_key=True)
     tu_nombre = models.CharField(max_length=50)
@@ -43,14 +42,12 @@ class TipoUsuario(models.Model):
         managed = False
         db_table = 'tipo_usuario'
 
-
 class Regiones(models.Model):
     nombre = models.CharField(unique=True, max_length=255)
 
     class Meta:
         managed = False
         db_table = 'regiones'
-
 
 class PropiedadesComunas(models.Model):
     propiedad = models.ForeignKey('Propiedades', models.DO_NOTHING)
@@ -59,7 +56,6 @@ class PropiedadesComunas(models.Model):
     class Meta:
         managed = False
         db_table = 'propiedades_comunas'
-
 
 class Propiedades(models.Model):
     nombre = models.CharField(max_length=255)
@@ -91,8 +87,6 @@ class PropiedadesImagenes(models.Model):
     def __str__(self):
         return f"Imagen de {self.propiedad.nombre} - {self.pi_url}"
 
-
-
 class Comunas(models.Model):
     nombre = models.CharField(unique=True, max_length=255)
     region = models.ForeignKey(Regiones, models.DO_NOTHING, blank=True, null=True)
@@ -103,7 +97,6 @@ class Comunas(models.Model):
         
     def __str__(self):
         return self.nombre
-
 
 class Arrendamientos(models.Model):
     arrendatario = models.ForeignKey(Usuarios, models.DO_NOTHING)

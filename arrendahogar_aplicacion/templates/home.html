@@ -1,15 +1,42 @@
-
 {% extends 'base.html' %}
 {% block template %}
-    <h1>Bienvenido a Arrienda-hogar</h1>
-    <ul>
+    <h1 class="text-center mb-4">Bienvenido a Arrienda-hogar</h1>
 
+    <!-- Carrusel de propiedades -->
+    {% if propiedades %}
+        <div id="propertyCarousel" class="carousel slide" data-bs-ride="carousel">
+            <div class="carousel-inner">
+                {% for propiedad in propiedades %}
+                    {% if propiedad.propiedadesimagenes_set.all %}
+                        {% for imagen in propiedad.propiedadesimagenes_set.all %}
+                            <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                                <img src="{{ imagen.pi_url }}" class="d-block w-100 img-carousel" alt="{{ propiedad.nombre }}">
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                {% endfor %}
+            </div>
+            <a class="carousel-control-prev" href="#propertyCarousel" role="button" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </a>
+            <a class="carousel-control-next" href="#propertyCarousel" role="button" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </a>
+        </div>
+    {% else %}
+        <p class="text-center">No hay propiedades disponibles en este momento.</p>
+    {% endif %}
+
+    <!-- Botones de usuario -->
+    <div class="text-center mt-4">
         {% if user.is_authenticated %}
-        <li><a href="{% url 'profile' %}">Tu Perfil</a></li>
-        <li><a href="{% url 'logout' %}">Cerrar Sesion</a></li>
+            <a href="{% url 'profile' %}" class="btn btn-primary mx-2">Tu Perfil</a>
+            <a href="{% url 'logout' %}" class="btn btn-danger mx-2">Cerrar Sesión</a>
         {% else %}
-        <li><a href="{% url 'login' %}">Ingresar</a></li>
-        <li><a href="{% url 'register' %}">Registrarse</a></li>
+            <a href="{% url 'login' %}" class="btn btn-success mx-2">Ingresar</a>
+            <a href="{% url 'register' %}" class="btn btn-secondary mx-2">Registrarse</a>
         {% endif %}
-    </ul>
+    </div>
 {% endblock %}

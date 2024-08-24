@@ -1,23 +1,22 @@
-
 {% extends 'base.html' %}
 {% block template %}
 
 <div class="container">
-    <h1 class="my-4">Lista de Propiedades</h1>
+    <h1 class="my-4 text-center">Lista de Propiedades</h1>
     <div class="row">
         {% for propiedad in propiedades %}
             <div class="col-md-4 mb-4">
                 <div class="card">
-                    {% if propiedad.imagenes.all %}
-                        <img src="{{ propiedad.imagenes.first.pi_url }}" class="card-img-top" alt="{{ propiedad.nombre }}">
+                    {% if propiedad.propiedadesimagenes_set.first %}
+                        <img src="{{ propiedad.propiedadesimagenes_set.first.pi_url }}" class="card-img-top img-fluid img-fixed-size" alt="{{ propiedad.nombre }}">
                     {% else %}
-                        <img src="" class="card-img-top" alt="No Image Available">
+                        <img src="ruta/a/imagen_default.jpg" class="card-img-top img-fluid img-fixed-size" alt="No Image Available">
                     {% endif %}
                     <div class="card-body">
                         <h5 class="card-title">{{ propiedad.nombre }}</h5>
-                        <p class="card-text"><strong>Dirección:</strong> {{ propiedad.direccion }}</p>
-                        <p class="card-text"><strong>Precio Mensual:</strong> {{ propiedad.precio_mensual }} CLP</p>
-                        <p class="card-text"><strong>Descripción:</strong> {{ propiedad.descripcion }}</p>
+                        <p class="card-text"><strong>Comuna:</strong> {{ propiedad.comuna }}</p>
+                        <p class="card-text"><strong>Precio Mensual:</strong> ${{ propiedad.precio_mensual }}</p>
+
                         <a href="{% url 'detalle_propiedad' propiedad.id %}" class="btn btn-primary">Ver Detalles</a>
                     </div>
                 </div>
@@ -29,7 +28,5 @@
         {% endfor %}
     </div>
 </div>
+
 {% endblock %}
-
-
-            <!-- <a href="{% url 'detalle_propiedad' propiedad.id %}" class="list-group-item list-group-item-action mb-2"> -->

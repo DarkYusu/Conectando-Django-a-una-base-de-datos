@@ -3,13 +3,14 @@ from django.contrib.auth import authenticate, login
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
-from .models import Usuarios, Propiedades,AuthUser
-from django.core.exceptions import ObjectDoesNotExist
+from .models import Usuarios, Propiedades
 from .forms import PropiedadesForm, PropiedadesImagenesFormSet,PerfilUsuarioForm
+from django.forms import ModelForm
 
 def home(request):
     usuario =Usuarios.objects.filter(user_id=request.user.id).first()
-    return render(request, 'home.html', {"usuario":usuario})
+    propiedades = Propiedades.objects.all()  # Obtén todas las propiedades
+    return render(request, 'home.html', {'propiedades': propiedades,'usuario':usuario})
 
 def bas(request):
     usuario =Usuarios.objects.filter(user_id=request.user.id).first()
@@ -60,7 +61,7 @@ def editar_perfil(request):
         form = PerfilUsuarioForm(request.POST, instance=usuario)
         if form.is_valid():
             form.save()
-            return redirect('perfil_usuario')
+            return redirect('profile')
     else:
         form = PerfilUsuarioForm(instance=usuario)
 
@@ -87,7 +88,7 @@ def propiedades_arrendador(request):
     else:
         return redirect('home')  # Redirige si no es un arrendador
     
-from django.forms import ModelForm
+
 
 class PropiedadForm(ModelForm):
     class Meta:
@@ -135,7 +136,7 @@ def editar_propiedad(request, pk):
         if form.is_valid() and formset.is_valid():
             form.save()
             formset.save()
-            return redirect('detalle_propiedad', pk=propiedad.pk)
+            return redirect('detalle_propiedad', propiedad_id=propiedad.id)
     else:
         form = PropiedadesForm(instance=propiedad)
         formset = PropiedadesImagenesFormSet(instance=propiedad)

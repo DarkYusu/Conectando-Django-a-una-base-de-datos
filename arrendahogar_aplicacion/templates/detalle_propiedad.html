@@ -1,44 +1,48 @@
 {% extends 'base.html' %}
-
 {% block template %}
-<div class="container">
-    <h1 class="my-4">{{ propiedad.nombre }}</h1>
+<div class="container mt-4">
+    <h1 class="mb-4">{{ propiedad.nombre }}</h1>
+
     <div class="row">
+        <!-- Mostrar todas las imágenes de la propiedad -->
         <div class="col-md-8">
-            {% if propiedad.imagenes.all %}
-                <div id="carouselExampleIndicators" class="carousel slide">
+            {% if propiedad.propiedadesimagenes_set.all %}
+                <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
                     <div class="carousel-inner">
-                        {% for imagen in propiedad.imagenes.all %}
+                        {% for imagen in propiedad.propiedadesimagenes_set.all %}
                             <div class="carousel-item {% if forloop.first %}active{% endif %}">
-                                <img src="{{ imagen.pi_url }}" class="d-block w-100" alt="{{ propiedad.nombre }}">
+                                <img src="{{ imagen.pi_url }}" class="d-block w-100 img-fluid" alt="Imagen de {{ propiedad.nombre }}" style="height: 400px; object-fit: cover;">
                             </div>
                         {% endfor %}
                     </div>
-                    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+                    <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-bs-slide="prev">
                         <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                        <span class="visually-hidden">Previous</span>
-                    </button>
-                    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+                        <span class="visually-hidden">Anterior</span>
+                    </a>
+                    <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-bs-slide="next">
                         <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                        <span class="visually-hidden">Next</span>
-                    </button>
+                        <span class="visually-hidden">Siguiente</span>
+                    </a>
                 </div>
             {% else %}
-                <img src="" class="img-fluid" alt="No Image Available">
+                <img src="ruta/a/imagen_default.jpg" class="img-fluid" alt="Imagen no disponible" style="height: 400px; object-fit: cover;">
             {% endif %}
         </div>
+
         <div class="col-md-4">
+            <h3>Detalles</h3>
             <p><strong>Dirección:</strong> {{ propiedad.direccion }}</p>
+            <p><strong>Precio mensual:</strong> ${{ propiedad.precio_mensual }}</p>
             <p><strong>Descripción:</strong> {{ propiedad.descripcion }}</p>
-            <p><strong>Metros Construidos:</strong> {{ propiedad.m2_construidos }} m²</p>
-            <p><strong>Metros Totales:</strong> {{ propiedad.m2_totales }} m²</p>
+            <p><strong>Superficie Construida:</strong> {{ propiedad.m2_construidos }} m²</p>
+            <p><strong>Superficie Total:</strong> {{ propiedad.m2_totales }} m²</p>
             <p><strong>Estacionamientos:</strong> {{ propiedad.cantidad_estacionamientos }}</p>
             <p><strong>Habitaciones:</strong> {{ propiedad.cantidad_habitaciones }}</p>
             <p><strong>Baños:</strong> {{ propiedad.cantidad_banos }}</p>
             <p><strong>Tipo de Inmueble:</strong> {{ propiedad.tipo_inmueble }}</p>
-            <p><strong>Precio Mensual:</strong> {{ propiedad.precio_mensual }} CLP</p>
+            <p><strong>Comuna:</strong> {{ propiedad.comuna.nombre }}</p>
+            <p><strong>Arrendador:</strong> {{ propiedad.arrendador.nombres }} {{ propiedad.arrendador.apellidos }}</p>
         </div>
     </div>
-    <a href="{% url 'propiedades_list' %}" class="btn btn-secondary mt-4">Volver a la Lista de Propiedades</a>
 </div>
 {% endblock %}
